@@ -444,6 +444,10 @@ class BookingCreateView(APIView):
             'amount': request.data.get('amount'),
             'payment': request.data.get('payment'),
             'doctor_slot': request.data.get('doctor_slot'),
+            'city':request.data.get('city'),
+            'address':request.data.get('address'),
+            'latitude':request.data.get('latitude'),
+            'longitude':request.data.get('longitude'),
             # Include other fields as needed
         }
         print("paymentttttttt", payment_data)

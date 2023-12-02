@@ -12,6 +12,8 @@ const PaymentSuccess = () => {
   const end_time = location.state?.end_time;
   const amount = location.state?.amount;
   const selectedSlotId = location.state?.selectedSlotId;
+  const propertyDetails = location.state?.propertyDetails || {};
+  console.log("orrrrr",propertyDetails)
 
   useEffect(() => {
     console.log('useEffect triggered');
@@ -24,6 +26,10 @@ const PaymentSuccess = () => {
       amount: amount,
       payment: true,
       doctor_slot: selectedSlotId,
+      address:propertyDetails.address,
+      city:propertyDetails.city,
+      latitude:propertyDetails.latitude,
+      longitude:propertyDetails.longitude,
     });
     const storeBookingDetails = async () => {
       try {
@@ -36,6 +42,10 @@ const PaymentSuccess = () => {
           amount: amount,
           payment: true,
           doctor_slot: selectedSlotId,
+          address:propertyDetails.address,
+          city:propertyDetails.city,
+          latitude:propertyDetails.latitude,
+          longitude:propertyDetails.longitude,
         };
 
         console.log('Booking Data:', bookingData);
@@ -49,7 +59,7 @@ const PaymentSuccess = () => {
     };
 
     storeBookingDetails();
-  }, [user, doctor, date, start_time, end_time, amount, selectedSlotId]);
+  }, [user, doctor, date, start_time, end_time, amount, selectedSlotId,propertyDetails]);
 
   return (
     <div>

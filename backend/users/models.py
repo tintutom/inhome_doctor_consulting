@@ -43,10 +43,10 @@ class Payments(models.Model):
     payment = models.BooleanField(default=False)
     amount = models.IntegerField()  
     doctor_slot = models.ForeignKey(DoctorSlot, on_delete=models.CASCADE,null=True)
-    # city = models.CharField(max_length=255)
-    # address = models.TextField()
-    # latitude=models.DecimalField(max_digits=30,decimal_places=20, null=True)
-    # longitude=models.DecimalField(max_digits=30,decimal_places=20, null=True)
+    city = models.CharField(max_length=255, null=True)
+    address = models.TextField(max_length=255,null=True)
+    latitude=models.DecimalField(max_digits=30,decimal_places=20, null=True)
+    longitude=models.DecimalField(max_digits=30,decimal_places=20, null=True)
     
     
     # def __str__(self):

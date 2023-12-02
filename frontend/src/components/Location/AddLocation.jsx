@@ -192,6 +192,7 @@ const AddLocation = ({ propertyDetails }) => {
       console.error('Error fetching address:', error);
     }
   };
+  
 
   const handleSubmit = async () => {
     try {
@@ -212,10 +213,12 @@ const AddLocation = ({ propertyDetails }) => {
           selectedDate,
           selectedTimeSlot,
           selectedSlotId,
-          address: propertyDetailsState?.address,
-          city: propertyDetailsState?.city,
-          latitude: propertyDetailsState?.latitude,
-          longitude: propertyDetailsState?.longitude,
+          propertyDetails: {
+            address: propertyDetailsState?.address,
+            city: propertyDetailsState?.city,
+            latitude: propertyDetailsState?.latitude,
+            longitude: propertyDetailsState?.longitude,
+          },
         },
       });
     } catch (error) {
@@ -247,6 +250,22 @@ const AddLocation = ({ propertyDetails }) => {
             type="text"
             value={propertyDetailsState?.address}
             onChange={(e) => updatePropertyDetails({ address: e.target.value })}
+          />
+
+
+          <label style={{ marginLeft: "1rem" }}>Latitude</label>
+          <input
+            style={{ borderRadius: "10px", border: "1px solid black", marginLeft: "1rem" }}
+            type="text"
+            value={propertyDetailsState?.latitude}
+            onChange={(e) => updatePropertyDetails({ latitude: e.target.value })}
+          />
+          <label style={{ marginLeft: "1rem" }}>Longitude</label>
+          <input
+            style={{ borderRadius: "10px", border: "1px solid black", marginLeft: "1rem" }}
+            type="text"
+            value={propertyDetailsState?.longitude}
+            onChange={(e) => updatePropertyDetails({ longitude: e.target.value })}
           />
 
           <Map

@@ -236,8 +236,8 @@ import { mediaUrl,baseUrl } from '../utils/Constants';
   // const { users, doctor, selectedDate, selectedTimeSlot,propertyDetails } = location.state;
   // const { address, city } = propertyDetails;
   const { users, doctor, selectedDate, selectedTimeSlot,selectedSlotId, propertyDetails } = location.state;
-  const { address, city } = propertyDetails || {};
-  console.log({propertyDetails})
+  const { address, city,latitude,longitude } = propertyDetails || {};
+  console.log("addddddddddddddd",propertyDetails)
   console.log("Selected Slot ID in ClientPayment:", selectedSlotId);
 
   //spliting time 
@@ -345,7 +345,8 @@ import { mediaUrl,baseUrl } from '../utils/Constants';
           start_time: startTime,
           end_time: endTime,
           amount:feeAmount,
-          selectedSlotId:selectedSlotId
+          selectedSlotId:selectedSlotId,
+          propertyDetails: propertyDetails,
            
         },
       });
@@ -406,8 +407,8 @@ import { mediaUrl,baseUrl } from '../utils/Constants';
                         <div>
                         <p className="font-bold">Email:</p>
                         <p>{users.email}</p>
-                        {/* <p className="font-bold">Address:</p>
-                        <p>{users.address}</p> */}
+                        <p className="font-bold">Address:</p>
+                        <p>{users.address}</p>
                         </div>
                         <div>
                         <p className="font-bold">Date:</p>

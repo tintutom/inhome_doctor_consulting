@@ -98,7 +98,7 @@
 import { NavDropdown } from 'react-bootstrap';
 import logo from '../../assets/images/inhome-consulting-logo11.jpg';
 import userImg from '../../assets/images/avatar-icon.png';
-
+import {mediaUrl, baseUrl} from '../../utils/Constants';
 import React, { useEffect, useRef, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
@@ -151,7 +151,7 @@ const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false); // Added state for showing/hiding profile dropdown
-
+  const [userImage,setUserImage]=useState(null);
 
   const [isHeaderWhite, setIsHeaderWhite] = useState(false);
 
@@ -209,8 +209,18 @@ const Header = () => {
             headers: { 'Content-Type': 'application/json' },
           }
         )
+        
         .then((res) => {
           dispatch(change(res.data.username));
+          
+          axios.get(`${baseUrl}get-user/${res.data.id}`)
+            .then((userResponse) => {
+              const userImagePath = `${mediaUrl}${userResponse.data.userimage}`;
+              setUserImage(userImagePath);
+            })
+            .catch((userError) => {
+              console.log('Error fetching user information:', userError);
+            });
         })
         .catch((err) => {
           console.log('Error:', err);
@@ -270,13 +280,21 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <div >
               <div className="profile-dropdown">
+              {userImage ? (
+                  <img
+                    src={userImage}
+                    className="w-[35px] h-[35px] rounded-full cursor-pointer"
+                    alt=""
+                    onClick={toggleProfile}
+                  />
+                ) : (
                   <img
                     src={userImg}
                     className="w-[35px] h-[35px] rounded-full cursor-pointer"
                     alt=""
-
                     onClick={toggleProfile}
                   />
+                )}
                   
                   
               </div>
