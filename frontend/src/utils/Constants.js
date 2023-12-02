@@ -1,7 +1,7 @@
 
 
-export const baseUrl = "http://localhost:8000/";
-export const mediaUrl= "http://localhost:8000";
+export const baseUrl = "http://localhost:8001/";
+export const mediaUrl= "http://localhost:8001";
 
 
 

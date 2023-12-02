@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +45,9 @@ INSTALLED_APPS = [
     'doctors',
     'cadmin',
     'chat',
-    # 'channels',
+    'channels',
+    # 'channels_redis',
+
     # 'channels_redis',
     # 'agora'
 ]
@@ -58,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'channels.middleware.ChannelsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'inhome_doctor_consulting.urls'
@@ -78,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'inhome_doctor_consulting.wsgi.application'
+# WSGI_APPLICATION = 'inhome_doctor_consulting.wsgi.application'
 ASGI_APPLICATION = 'inhome_doctor_consulting.asgi.application'
 
 
@@ -96,14 +101,18 @@ DATABASES = {
     }
 }
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
 
-# Configure channels layer to use Redis as a backing store
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Update with your Redis server information
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # or use a different backend
     },
 }
 
@@ -157,4 +166,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True

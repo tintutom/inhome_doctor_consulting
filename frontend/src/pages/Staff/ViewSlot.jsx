@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+import { baseUrl } from '../../utils/Constants';
 const DoctorSlotsListPage = ({ doctorId }) => {
   const [slots, setSlots] = useState([]);
   console.log("devil")
@@ -12,7 +12,7 @@ const DoctorSlotsListPage = ({ doctorId }) => {
     const fetchDoctorSlots = async () => {
       try {
         const token = Cookies.get('hospital_id');
-        const response = await axios.get(`http://localhost:8000/doctors/${token}/view_slots`);
+        const response = await axios.get(`${baseUrl}doctors/${token}/view_slots`);
         setSlots(response.data);
       } catch (error) {
         console.error('Error fetching doctor slots:', error);
@@ -48,7 +48,7 @@ const DoctorSlotsListPage = ({ doctorId }) => {
     try {
       const token = Cookies.get('hospital_id');
       // console.log("URLDELETE",`http://localhost:8000/doctors/${token}/slots/${slotId}/delete`)
-      await axios.delete(`http://localhost:8000/doctors/${token}/slots/${slotId}/delete`);
+      await axios.delete(`${baseUrl}doctors/${token}/slots/${slotId}/delete`);
       alert('Slot deleted successfully!');
       // You may want to update the state or perform additional actions after successful deletion.
     } catch (error) {

@@ -3,7 +3,7 @@ import DoctorSlotForm from '../../components/Staffdoctor/DoctorSlotForm';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-
+import { baseUrl } from '../../utils/Constants';
 const DoctorSlotPage = ({ doctorId }) => {
     const navigate = useNavigate();
     const handleSlotSubmit = async (formData) => {
@@ -13,10 +13,10 @@ const DoctorSlotPage = ({ doctorId }) => {
           console.log("tokennnn",token)
           console.log("id",{doctorId})
           console.log("hiiiiii")
-          console.log("URL:", `http://localhost:8000/doctors/${token}/slots`);
+          console.log("URL:", `${baseUrl}doctors/${token}/slots`);
 
           await axios.post(
-            `http://localhost:8000/doctors/${token}/slots`,
+            `${baseUrl}doctors/${token}/slots`,
             formData,
             {
               headers: {

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import L from 'leaflet';
-
+import {baseUrl} from '../../utils/Constants'
 const MapView = ({ appointment, onClose }) => {
   const [userLocation, setUserLocation] = useState([
     parseFloat(appointment.user.address.latitude),
@@ -44,7 +44,7 @@ const AppoinmentView = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/doctors/upcoming-appointments/${docId}/`);
+        const response = await axios.get(`${baseUrl}doctors/upcoming-appointments/${docId}/`);
         setAppointments(response.data);
         console.log(response.data)
       } catch (error) {
