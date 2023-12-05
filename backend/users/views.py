@@ -12,7 +12,7 @@ from doctors.models import Doctorinfo,Specialization,DoctorSlot,DoctorAdditional
 from doctors.serializers import Specialization_serializer,DoctorAdditionalDetailsSerializer,Doctorinfo_Serializer,DoctorSlotSerializer
 from rest_framework import status
 from .models import  User,Payments,UserAddress,Feedback
-from .serializers import User_Serializer,DoctorSlotSerializer,ProfessionalSerializer,UserAddressSerializer,FeedbackSerializer
+from .serializers import User_Serializer,DoctorSlotSerializer,ProfessionalSerializer,UserAddressSerializer,FeedbackSerializer,PaymentSerializer
 import razorpay
 from datetime import datetime
 from django.utils import timezone
@@ -420,7 +420,6 @@ class HandlePaymentSuccessView(APIView):
             }
 
         except Payments.DoesNotExist:
-            print("Booking with the provided ID does not exist")
             return Response({'error': 'Booking does not exist'})
 
         except Exception as e:
@@ -448,7 +447,6 @@ class BookingCreateView(APIView):
             'address':request.data.get('address'),
             'latitude':request.data.get('latitude'),
             'longitude':request.data.get('longitude'),
-            # Include other fields as needed
         }
         print("paymentttttttt", payment_data)
         serializer = BookingSerializer(data=payment_data)
@@ -458,7 +456,7 @@ class BookingCreateView(APIView):
             # Update the slot availability to True
             doctor_slot_id = request.data.get('doctor_slot')
             slot = get_object_or_404(DoctorSlot, id=doctor_slot_id)
-            slot.is_available = False  # Set to True if you're indicating slot is available when is_available is True
+            slot.is_available = False 
             slot.save()
 
             print(serializer.data)
@@ -467,27 +465,27 @@ class BookingCreateView(APIView):
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class UpcomingAppointmentsView(APIView):
-#     def get(self, request, id):  
-#         try:
-#             # Retrieve all appointments for the user
-#             user_appointments = Payments.objects.filter(user_id=id,payment=True)
+class BookingCancelView(APIView):
+    def post(self, request):
+        # Assuming you pass the booking ID to cancel in the request data
+        booking_id = request.data.get('booking_id')
+        
+        # Retrieve the booking instance
+        booking = get_object_or_404(Payments, id=booking_id)
+        
+        # Free up the booked slot
+        if booking.doctor_slot:
+            booking.doctor_slot.is_available = True
+            booking.doctor_slot.save()
+        
+        # Delete the booking
+        booking.delete()
 
-#             # Serialize the data
-#             serializer = BookingSerializer(user_appointments, many=True)
-
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except Payments.DoesNotExist:
-#             return Response({"error": "Payments not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
+        return Response({"message": "Appointment cancelled successfully."}, status=status.HTTP_200_OK)
 class UpcomingAppointmentsView(APIView):
     def get(self, request, id):  
         try:
-            # Retrieve all appointments for the user
             user_appointments = Payments.objects.filter(user_id=id, payment=True)
-
-            # Serialize the data
             serializer = BookingSerializer(user_appointments, many=True)
 
             # Fetch corresponding doctor and user data
@@ -498,15 +496,12 @@ class UpcomingAppointmentsView(APIView):
 
                 doctor_instance = Doctorinfo.objects.get(id=doctor_id)
                 user_instance = User.objects.get(id=user_id)
-                user_address_instance = UserAddress.objects.get(user=user_instance)
 
                 doctor_serializer = Doctorinfo_Serializer(doctor_instance)
                 user_serializer = User_Serializer(user_instance)
-                user_address_serializer = UserAddressSerializer(user_address_instance)
 
                 appointment_data['doctor'] = doctor_serializer.data
                 appointment_data['user'] = user_serializer.data
-                appointment_data['user']['address'] = user_address_serializer.data
 
 
             return Response(appointments_data, status=status.HTTP_200_OK)
@@ -517,10 +512,8 @@ class UpcomingAppointmentsView(APIView):
 class PastAppointmentsView(APIView):
     def get(self, request, id):  
         try:
-            # Retrieve all past appointments for the user
             user_past_appointments = Payments.objects.filter(user_id=id, payment=True, date__lt=timezone.now())
 
-            # Serialize the data
             serializer = BookingSerializer(user_past_appointments, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -541,21 +534,14 @@ class FeedbackListView(APIView):
         feedback = Feedback.objects.filter(doctor=doctor_id)
         serializer = FeedbackListSerializer(feedback, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from .serializers import LocationSerializer, LocationAddSerializer
-# from .models import Location
+    
 
-# class LocationListView(APIView):
-#     def get(self, request, format=None):
-#         locations = Location.objects.all()
-#         serializer = LocationSerializer(locations, many=True)
-#         return Response(serializer.data)
-
-# class LocationAddView(APIView):
-#     def post(self, request, format=None):
-#         serializer = LocationAddSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=201)
-#         return Response(serializer.errors, status=400)
+class PaymentDetailView(APIView):
+    def get(self, request):
+        try:
+            payment = Payments.objects.all()
+            serializer = PaymentSerializer(payment, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Payments.DoesNotExist:
+            return Response({"detail": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
+        

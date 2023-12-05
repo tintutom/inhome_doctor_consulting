@@ -17,10 +17,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const usernameSlice = createSlice({
     name: "username",
-    initialState: { id: "null", username: "" },
+    initialState: { username: "" },
     reducers: {
         change: (state, action) => {
-            return { id: state.id, username: action.payload };
+            return { ...state, username: action.payload };
+            // return { id: state.id, username: action.payload };
         },
         setId: (state, action) => {
             return { id: action.payload, username: state.username };

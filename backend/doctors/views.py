@@ -11,7 +11,7 @@ import json
 import base64
 from doctors.models import Doctorinfo, Specialization,DoctorSlot,DoctorAdditionalDetails
 # from doctors.serializers import Doctorinfo_Serializer
-from users.serializers import BookingSerializer,UserAddressSerializer,User_Serializer
+from users.serializers import PaymentSerializer,UserAddressSerializer,User_Serializer,BookingSerializer
 from users.models import Payments,User,UserAddress
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -275,15 +275,12 @@ class UpcomingAppointmentsView(APIView):
 
                 doctor_instance = Doctorinfo.objects.get(id=doctor_id)
                 user_instance = User.objects.get(id=user_id)
-                user_address_instance = UserAddress.objects.get(user=user_instance)
 
                 doctor_serializer = Doctorinfo_Serializer(doctor_instance)
                 user_serializer = User_Serializer(user_instance)
-                user_address_serializer = UserAddressSerializer(user_address_instance)
 
                 appointment_data['doctor'] = doctor_serializer.data
                 appointment_data['user'] = user_serializer.data
-                appointment_data['user']['address'] = user_address_serializer.data
 
 
             return Response(appointments_data, status=status.HTTP_200_OK)

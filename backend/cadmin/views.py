@@ -83,7 +83,7 @@
 
 from django.shortcuts import render
 from rest_framework.response import Response
-from users.models import User
+from users.models import User,Feedback,Payments
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import jwt
@@ -92,6 +92,7 @@ import json
 import base64
 from doctors.serializers import Doctorinfo_Serializer,Specialization_serializer
 from users.serializers import User_Serializer
+from .serializers import FeedbackSerializer,AppointmentSerializer,DoctorSerializer
 from django.contrib.auth.hashers import check_password
 
 
@@ -238,7 +239,26 @@ def departments(request,id):
     serializer = Specialization_serializer(department,many=False)
     return Response(serializer.data)
 
+class AppointmentsAPIView(APIView):
+    def get(self, request, format=None):
+        appointments = Payments.objects.all()
+        appointment_serializer = AppointmentSerializer(appointments, many=True)
 
+        doctors = Doctorinfo.objects.all()
+        doctor_serializer = DoctorSerializer(doctors, many=True)
+
+        data = {
+            'appointments': appointment_serializer.data,
+            'doctors': doctor_serializer.data,
+        }
+
+        return Response(data)
+
+class TopFeedbackAPIView(APIView):
+    def get(self, request, format=None):
+        top_feedback = Feedback.objects.order_by('-rating')[:5]
+        serializer = FeedbackSerializer(top_feedback, many=True)
+        return Response(serializer.data)
 
 # from rest_framework import generics
 # from cadmin.serializers import *

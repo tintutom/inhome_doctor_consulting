@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -7,8 +6,8 @@ import L from 'leaflet';
 import {baseUrl} from '../../utils/Constants'
 const MapView = ({ appointment, onClose }) => {
   const [userLocation, setUserLocation] = useState([
-    parseFloat(appointment.user.address.latitude),
-    parseFloat(appointment.user.address.longitude),
+    parseFloat(appointment.latitude),
+    parseFloat(appointment.longitude),
   ]);
   const [doctorLocation, setDoctorLocation] = useState([
     9.9377157,
@@ -100,8 +99,8 @@ const AppoinmentView = () => {
                 <td className="py-2">
                   {/* Calculate and display the distance */}
                   {haversineDistance(
-                    appointment.user.address.latitude,  
-                    appointment.user.address.longitude,
+                    appointment.latitude,  
+                    appointment.longitude,
                     9.9377157,
                     76.32278183249196
                   ).toFixed(2)}

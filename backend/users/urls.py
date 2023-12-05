@@ -27,10 +27,12 @@ urlpatterns = [
     path('useraddresses/<int:id>/', UserAddressListCreateView.as_view(), name='user-address-list-create'),
     path('user-addresses/<int:id>/', UserAddressUpdateView.as_view(), name='user-address-update'),
     path('upcoming-appointments/<int:id>/', UpcomingAppointmentsView.as_view(), name='upcoming-appointments'),
+    path('cancel-appointment/', BookingCancelView.as_view(), name='cancel-appointments'),
+
     # path('user-past-appointments/<int:id>/', PastAppointmentsView.as_view(), name='user-past-appointments'),
-    
     path('submit-feedback/', SubmitFeedbackView.as_view(), name='submit-feedback'),
     path('feedback-list/<int:doctor_id>/', FeedbackListView.as_view(), name='feedback-list'),
+    path('payment/', PaymentDetailView.as_view(), name='payment-detail'),
 
 
 

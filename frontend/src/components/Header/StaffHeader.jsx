@@ -40,19 +40,24 @@ const navLinks = [
   {
     path: 'hospital/addslots',
     display: 'Add Slot',
-    },
-    {
-    path: '/hospital/slots',
-    display: 'View Slots',
-    },
-    {
-      path: '/hospital/calender',
-      display: 'Calender',
-      },
-      {
-        path: '/hospital/appoinments',
-        display: 'Appoinments',
-        },
+  },
+  {
+  path: '/hospital/slots',
+  display: 'View Slots',
+  },
+  {
+    path: '/hospital/calender',
+    display: 'Calender',
+  },
+  {
+    path: '/hospital/message',
+    display: 'Inbox',
+  },
+  {
+    path: '/hospital/appoinments',
+    display: 'Appoinments',
+  },
+     
   
     
 ];

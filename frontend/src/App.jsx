@@ -37,6 +37,8 @@ import AddLocation from './components/Location/AddLocation';
 import UserAppointments from './pages/Appoinment';
 import SearchUsers from './components/Messages/SearchUsers';
 import AppoinmentView from './pages/Staff/AppoinmentView';
+import ChatComponent from './components/Messages/message';
+import DocChatComponent from './components/Messages/DocMessage';
 
 function App() {
   
@@ -64,9 +66,10 @@ function App() {
           <Route path='/payment' element={<ClientPayment />} ></Route>
           <Route path='/success' element={<PaymentSuccess />} ></Route>
           <Route path='/addlocation' element={<AddLocation />} ></Route>
-          <Route path='/message' element={<Message />} ></Route>
-          <Route path='/inbox/:id' element={<MessageDetails />} ></Route>
+          <Route path='/message' element={<ChatComponent />} ></Route>
+          <Route path='/inbox' element={<MessageDetails />} ></Route>
           <Route path='/search/:username' element={<SearchUsers />} ></Route>
+
 
 
           <Route path='/appoinments' element={<UserAppointments />} ></Route>
@@ -95,6 +98,8 @@ function App() {
             <Route path='hospital/slots' element={<DoctorSlotsListPage />} />
             <Route path='hospital/calender' element={<DoctorCalender />} />
             <Route path='hospital/appoinments' element={<AppoinmentView />} />
+            <Route path='hospital/message' element={<DocChatComponent />} ></Route>
+
             
           </Route>  
 

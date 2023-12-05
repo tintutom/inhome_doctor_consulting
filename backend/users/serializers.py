@@ -12,32 +12,20 @@ class User_Serializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        
-# class Booking_Serializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Booking
-#         fields = '__all__'
-
 
 class DoctorSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorSlot
         fields = ['id', 'doctor', 'date', 'start_time', 'end_time']
-
-
-# class AppointmentSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Appointment
-#         fields = ['id', 'user', 'doctor_slot', 'booked_at']
-        
+    
 class DoctorSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorSlot
         fields = '__all__'
-        
+       
 class ProfessionalSerializer(serializers.ModelSerializer):
-    user = Doctorinfo_Serializer(read_only=True)  # Include the related user data
-    category = Specialization_serializer(required=False) # Set required=False for nullable ForeignKey
+    user = Doctorinfo_Serializer(read_only=True) 
+    category = Specialization_serializer(required=False) 
 
 class BookingSerializer(serializers.ModelSerializer):
     # doctor = Doctorinfo_Serializer()
@@ -63,3 +51,9 @@ class FeedbackListSerializer(serializers.ModelSerializer):
         model = Feedback
         fields = '__all__'
         
+class PaymentSerializer(serializers.ModelSerializer):
+    doctor = Doctorinfo_Serializer(read_only=True)
+    user = User_Serializer(read_only=True)
+    class Meta:
+        model = Payments
+        fields = '__all__'

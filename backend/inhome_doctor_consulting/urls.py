@@ -9,7 +9,7 @@ urlpatterns = [
     path('', include('users.urls')),
     path('doctors/',include('doctors.urls')),
     path('cadmin/',include('cadmin.urls')),
-    # path("chat/", include("chat.urls")),
+    path("chat/", include("chat.urls")),
 
 
 ] + static (settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
